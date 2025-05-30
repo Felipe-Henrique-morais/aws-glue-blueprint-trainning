@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Explorador Interativo: Workflow de CI com Docker</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Visualization & Content Choices:
+        - Report Info: GitHub Actions workflow YAML for a basic CI pipeline with Docker build and tests.
+        - Goal (Overall): Make this specific CI workflow and its explanation interactive and easier to understand for users.
+        - Presentation Methods:
+            - YAML Code: Displayed in a pre-formatted block, with specific segments wrapped for interactivity.
+            - Explanations: Textual content, dynamically shown in a dedicated panel.
+            - Sections: Structured HTML with Tailwind for clear information hierarchy (Introduction, What are Actions, Workflow Analysis (Interactive YAML + Explanations), Flow Summary, Key Highlights).
+        - Interactions:
+            - Click on YAML segments to trigger display of corresponding explanation text in a side panel.
+            - Active state indication for the selected YAML segment.
+        - Justification: Direct interaction with the YAML provides immediate context for the explanations, improving learning and retention for this specific CI process. The structured sections allow users to navigate based on their interest.
+        - Library/Method: Vanilla JavaScript for DOM manipulation and event handling. Tailwind CSS for styling and layout. No Chart.js or Plotly.js as no quantitative data to visualize.
+        - Confirmation: NO SVG/Mermaid used.
+    -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif; /* Using Inter as a clean, modern font */
+        }
+        .yaml-code-block {
+            white-space: pre;
+            font-family: 'Courier New', Courier, monospace;
+            line-height: 1.6;
+        }
+        .interactive-yaml-segment {
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            border-radius: 4px;
+            padding: 2px 4px;
+            margin: 1px 0;
+            display: inline-block; /* Allows padding and border radius to apply correctly */
+        }
+        .interactive-yaml-segment:hover {
+            background-color: #fde68a; /* amber-200 */
+        }
+        .interactive-yaml-segment.active {
+            background-color: #fcd34d; /* amber-300 */
+            font-weight: bold;
+        }
+        .explanation-panel-container {
+            position: sticky;
+            top: 1rem; /* Adjust as needed for header height */
+            max-height: calc(100vh - 2rem); /* Adjust based on top value and desired padding */
+            overflow-y: auto;
+        }
+        /* Custom scrollbar for explanation panel (optional, but enhances aesthetics) */
+        .explanation-panel-container::-webkit-scrollbar {
+            width: 8px;
+        }
+        .explanation-panel-container::-webkit-scrollbar-track {
+            background: #fef3c7; /* amber-100 */
+        }
+        .explanation-panel-container::-webkit-scrollbar-thumb {
+            background-color: #fbbf24; /* amber-400 */
+            border-radius: 10px;
+            border: 2px solid #fef3c7; /* amber-100 */
+        }
+    </style>
+</head>
+<body class="bg-amber-50 text-neutral-800 antialiased">
+
+    <header class="bg-amber-600 text-white py-6 shadow-md">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <h1 class="text-3xl font-bold text-center">Explorador Interativo: Workflow de CI com Docker</h1>
+        </div>
+    </header>
+
+    <main class="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
+
+        <section id="introducao" class="mb-12 p-6 bg-white rounded-lg shadow-lg">
+            <h2 class="text-2xl font-semibold text-amber-700 mb-4">Bem-vindo!</h2>
+            <p class="text-lg leading-relaxed">Esta página oferece uma análise interativa de um workflow de Integração Contínua (CI) simples, focado na construção de uma imagem Docker e na execução de testes. Explore cada parte da configuração YAML clicando nos segmentos destacados para entender seu propósito e funcionamento. Ideal para compreender os fundamentos de CI com Docker no GitHub Actions.</p>
+        </section>
+
+        <section id="o-que-sao-github-actions" class="mb-12 p-6 bg-white rounded-lg shadow-lg">
+            <h2 class="text-2xl font-semibold text-amber-700 mb-4">O que são GitHub Actions?</h2>
+            <p class="text-lg leading-relaxed mb-2">GitHub Actions é uma plataforma de CI/CD (Integração Contínua/Entrega Contínua) que permite automatizar tarefas diretamente no seu repositório GitHub. Você pode criar workflows personalizados para construir, testar e implantar seu código. Esses workflows são definidos em arquivos YAML e residem no diretório <code>.github/workflows/</code> do seu repositório.</p>
+            <p class="text-lg leading-relaxed">Esta seção introdutória ajuda a contextualizar a ferramenta principal utilizada para automatizar este pipeline de CI.</p>
+        </section>
+
+        <section id="analise-workflow" class="mb-12">
+            <h2 class="text-2xl font-semibold text-amber-700 mb-6 text-center">Análise Interativa do Workflow</h2>
+            <p class="text-lg leading-relaxed mb-6 text-center max-w-3xl mx-auto">Clique nas seções destacadas do código YAML abaixo. A explicação correspondente aparecerá ao lado. Esta abordagem permite que você conecte diretamente cada parte da configuração com sua descrição detalhada, facilitando o aprendizado.</p>
+            <div class="lg:flex lg:space-x-6">
+                <div class="lg:w-1/2 bg-slate-800 text-slate-100 p-6 rounded-lg shadow-xl yaml-code-block overflow-x-auto">
+<pre>
+<span id="yaml-name" class="interactive-yaml-segment">name: CI</span>
+
+<span id="yaml-on" class="interactive-yaml-segment">on: [push]</span>
+
+<span id="yaml-jobs" class="interactive-yaml-segment">jobs:</span>
+  <span id="yaml-job-build" class="interactive-yaml-segment ml-4">build:</span>
+    <span id="yaml-runs-on" class="interactive-yaml-segment ml-8">runs-on: ubuntu-latest</span>
+
+    <span id="yaml-steps" class="interactive-yaml-segment ml-8">steps:</span>
+      <span id="yaml-step-checkout" class="interactive-yaml-segment ml-10">- name: Check out code</span>
+        <span class="interactive-yaml-segment ml-12">uses: actions/checkout@v2</span>
+
+      <span id="yaml-step-build-docker" class="interactive-yaml-segment ml-10">- name: Build Docker image</span>
+        <span class="interactive-yaml-segment ml-12">run: docker build -t myfastapiapp .</span>
+
+      <span id="yaml-step-run-tests" class="interactive-yaml-segment ml-10">- name: Run tests</span>
+        <span class="interactive-yaml-segment ml-12">run: docker run myfastapiapp python -m unittest discover</span>
+</pre>
+                </div>
+                <div class="lg:w-1/2 mt-6 lg:mt-0 explanation-panel-container">
+                    <div id="explanation-panel" class="p-6 bg-amber-100 rounded-lg shadow-lg min-h-[300px] border border-amber-300">
+                        <p class="text-neutral-700 text-lg">Clique em uma seção do código YAML à esquerda para ver a explicação detalhada aqui.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="resumo-fluxo" class="mb-12 p-6 bg-white rounded-lg shadow-lg">
+            <h2 class="text-2xl font-semibold text-amber-700 mb-4">Resumo do Fluxo do Workflow</h2>
+            <p class="text-lg leading-relaxed mb-2">Este workflow de CI é disparado sempre que há um `push` para o repositório. Ele então executa as seguintes etapas:</p>
+            <ol class="list-decimal list-inside text-lg leading-relaxed space-y-1">
+                <li>**Verifica o Código:** Baixa o código do repositório para o ambiente de execução.</li>
+                <li>**Constrói a Imagem Docker:** Cria uma imagem Docker da sua aplicação (nomeada `myfastapiapp`) usando o Dockerfile no diretório atual.</li>
+                <li>**Executa os Testes:** Inicia um contêiner a partir da imagem recém-construída e executa os testes Python definidos na sua aplicação.</li>
+            </ol>
+            <p class="text-lg leading-relaxed mt-3">Este é um pipeline de CI fundamental para garantir que novas alterações de código não quebrem a aplicação e que a imagem Docker pode ser construída com sucesso.</p>
+        </section>
+
+        <section id="pontos-chave" class="p-6 bg-white rounded-lg shadow-lg">
+            <h2 class="text-2xl font-semibold text-amber-700 mb-4">Pontos Chave e Destaques</h2>
+            <p class="text-lg leading-relaxed mb-4">Para reforçar o aprendizado, alguns conceitos e práticas são cruciais neste workflow de CI:</p>
+            <div class="space-y-4">
+                <div>
+                    <h3 class="text-xl font-medium text-neutral-700">Gatilho Simples `on: [push]`:</h3>
+                    <p class="text-lg leading-relaxed">Este workflow é configurado para ser executado em qualquer `push` para qualquer branch. Isso é ideal para um pipeline de CI básico, garantindo feedback rápido sobre todas as alterações de código.</p>
+                </div>
+                <div>
+                    <h3 class="text-xl font-medium text-neutral-700">Integração Docker no CI:</h3>
+                    <p class="text-lg leading-relaxed">A construção da imagem Docker (`docker build`) e a execução dos testes dentro dessa imagem (`docker run`) são passos cruciais. Isso garante que sua aplicação e seus testes funcionem no ambiente conteinerizado, simulando o ambiente de produção.</p>
+                </div>
+                <div>
+                    <h3 class="text-xl font-medium text-neutral-700">Isolamento de Testes:</h3>
+                    <p class="text-lg leading-relaxed">Executar testes dentro do contêiner Docker garante que o ambiente de teste seja consistente e isolado, evitando problemas de dependências na máquina do runner do GitHub Actions.</p>
+                </div>
+                <div>
+                    <h3 class="text-xl font-medium text-neutral-700">Feedback Rápido:</h3>
+                    <p class="text-lg leading-relaxed">Um pipeline de CI como este fornece feedback rápido sobre a qualidade do código e a integridade da build, permitindo que os desenvolvedores identifiquem e corrijam problemas cedo no ciclo de desenvolvimento.</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="mt-12 py-8 bg-neutral-800 text-neutral-300 text-center">
+        <p>&copy; <span id="currentYear"></span> Explorador Interativo. Criado para facilitar o aprendizado de workflows.</p>
+    </footer>
+
+    <script>
+        document.getElementById('currentYear').textContent = new Date().getFullYear();
+
+        const explanations = {
+            'yaml-name': {
+                title: "<code>name: CI</code>",
+                text: "Define o nome do workflow. Este nome será exibido na interface do GitHub Actions, tornando fácil identificar este pipeline como o de Integração Contínua."
+            },
+            'yaml-on': {
+                title: "<code>on: [push]</code>",
+                text: "Esta seção define os eventos que irão disparar este workflow. O `<code>on: [push]</code>` significa que o workflow será executado sempre que houver um `git push` para qualquer branch do repositório. É um gatilho comum para pipelines de CI, pois garante que o código seja testado a cada nova alteração."
+            },
+            'yaml-jobs': {
+                title: "<code>jobs:</code>",
+                text: "Um workflow é composto por um ou mais 'jobs' (tarefas). Cada job é executado em um runner e consiste em uma série de passos. Este workflow possui um único job chamado `build`."
+            },
+            'yaml-job-build': {
+                title: "<code>build:</code>",
+                text: "Este é o nome do job principal neste workflow. O job `build` é responsável por construir a aplicação e executar os testes, garantindo que o código esteja funcional."
+            },
+            'yaml-runs-on': {
+                title: "<code>runs-on: ubuntu-latest</code>",
+                text: "Especifica o tipo de máquina virtual (runner) onde o job `build` será executado. `ubuntu-latest` significa a versão mais recente do Ubuntu Linux fornecida pelo GitHub. É um ambiente padrão e robusto para a maioria das tarefas de CI."
+            },
+            'yaml-steps': {
+                title: "<code>steps:</code>",
+                text: "Uma sequência de tarefas individuais (passos) que serão executadas em ordem dentro do job `build`. Cada passo realiza uma ação específica, como baixar o código, construir uma imagem ou executar comandos."
+            },
+            'yaml-step-checkout': {
+                title: "<code>- name: Check out code<br>  uses: actions/checkout@v2</code>",
+                text: "Este é o primeiro passo e é fundamental. Ele usa a action oficial `actions/checkout@v2` para baixar o código do seu repositório para o ambiente do runner. Isso permite que os passos subsequentes acessem seus arquivos e o `Dockerfile`."
+            },
+            'yaml-step-build-docker': {
+                title: "<code>- name: Build Docker image<br>  run: docker build -t myfastapiapp .</code>",
+                text: "Este passo constrói a imagem Docker da sua aplicação. O comando `<code>docker build -t myfastapiapp .</code>` instrui o Docker a criar uma imagem (tag: `myfastapiapp`) usando o `Dockerfile` encontrado no diretório atual (`.`). É crucial para empacotar sua aplicação e suas dependências."
+            },
+            'yaml-step-run-tests': {
+                title: "<code>- name: Run tests<br>  run: docker run myfastapiapp python -m unittest discover</code>",
+                text: "Após a imagem Docker ser construída, este passo executa os testes. O comando `<code>docker run myfastapiapp</code>` inicia um novo contêiner a partir da imagem `myfastapiapp`. Em seguida, `<code>python -m unittest discover</code>` é executado dentro desse contêiner para encontrar e rodar todos os testes Python. Isso garante que seus testes sejam executados em um ambiente isolado e consistente."
+            }
+        };
+
+        const explanationPanel = document.getElementById('explanation-panel');
+        const yamlSegments = document.querySelectorAll('.interactive-yaml-segment');
+        let currentActiveSegment = null;
+
+        yamlSegments.forEach(segment => {
+            segment.addEventListener('click', () => {
+                const explanationKey = segment.id;
+                if (explanations.hasOwnProperty(explanationKey)) {
+                    const content = explanations[explanationKey]; // Simplificado para usar diretamente o objeto explanations
+                    if (content) {
+                        explanationPanel.innerHTML = `
+                            <h3 class="text-xl font-semibold text-amber-800 mb-2">${content.title}</h3>
+                            <p class="text-neutral-700 text-lg leading-relaxed">${content.text}</p>
+                        `;
+                        if (currentActiveSegment) {
+                            currentActiveSegment.classList.remove('active');
+                        }
+                        segment.classList.add('active');
+                        currentActiveSegment = segment;
+                    }
+                }
+            });
+        });
+        // Removidas as definições de explanationsMap, explanationsByName e explanationsPropsMap, pois não são necessárias com a abordagem simplificada.
+    </script>
+
+</body>
+</html>
