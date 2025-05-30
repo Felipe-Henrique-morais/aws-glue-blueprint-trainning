@@ -1,0 +1,410 @@
+Aqui está o código HTML completo para a sua página interativa que explica o
+workflow **`on IaC PR against [dev]`**. Este é o mesmo código que eu te forneci
+anteriormente, mas estou gerando-o novamente para sua conveniência. Por favor,
+copie e cole este conteúdo diretamente no seu arquivo
+`training/iac-pr-dev-explainer/index.html`. ```html
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Explorador Interativo: IaC PR para Ambiente QA</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Visualization & Content Choices:
+        - Report Info: GitHub Actions workflow YAML for an IaC PR pipeline targeting a 'dev' branch for QA environment.
+        - Goal (Overall): Make this specific IaC PR workflow and its explanation interactive and easier to understand for users.
+        - Presentation Methods:
+            - YAML Code: Displayed in a pre-formatted block, with specific segments wrapped for interactivity.
+            - Explanations: Textual content, dynamically shown in a dedicated panel.
+            - Sections: Structured HTML with Tailwind for clear information hierarchy (Introduction, What are Actions, Workflow Analysis (Interactive YAML + Explanations), Flow Summary, Key Highlights).
+        - Interactions:
+            - Click on YAML segments to trigger display of corresponding explanation text in a side panel.
+            - Active state indication for the selected YAML segment.
+        - Justification: Direct interaction with the YAML provides immediate context for the explanations, improving learning and retention for this specific IaC automation process. The structured sections allow users to navigate based on their interest.
+        - Library/Method: Vanilla JavaScript for DOM manipulation and event handling. Tailwind CSS for styling and layout. No Chart.js or Plotly.js as no quantitative data to visualize.
+        - Confirmation: NO SVG/Mermaid used.
+    -->
+    <style>
+      body {
+        font-family: "Inter", sans-serif; /* Using Inter as a clean, modern font */
+      }
+      .yaml-code-block {
+        white-space: pre;
+        font-family: "Courier New", Courier, monospace;
+        line-height: 1.6;
+      }
+      .interactive-yaml-segment {
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+        border-radius: 4px;
+        padding: 2px 4px;
+        margin: 1px 0;
+        display: inline-block; /* Allows padding and border radius to apply correctly */
+      }
+      .interactive-yaml-segment:hover {
+        background-color: #fde68a; /* amber-200 */
+      }
+      .interactive-yaml-segment.active {
+        background-color: #fcd34d; /* amber-300 */
+        font-weight: bold;
+      }
+      .explanation-panel-container {
+        position: sticky;
+        top: 1rem; /* Adjust as needed for header height */
+        max-height: calc(
+          100vh - 2rem
+        ); /* Adjust based on top value and desired padding */
+        overflow-y: auto;
+      }
+      /* Custom scrollbar for explanation panel (optional, but enhances aesthetics) */
+      .explanation-panel-container::-webkit-scrollbar {
+        width: 8px;
+      }
+      .explanation-panel-container::-webkit-scrollbar-track {
+        background: #fef3c7; /* amber-100 */
+      }
+      .explanation-panel-container::-webkit-scrollbar-thumb {
+        background-color: #fbbf24; /* amber-400 */
+        border-radius: 10px;
+        border: 2px solid #fef3c7; /* amber-100 */
+      }
+    </style>
+  </head>
+  <body class="bg-amber-50 text-neutral-800 antialiased">
+    <header class="bg-amber-600 text-white py-6 shadow-md">
+      <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+        <h1 class="text-3xl font-bold text-center">
+          Explorador Interativo: IaC PR para Ambiente QA
+        </h1>
+      </div>
+    </header>
+
+    <main class="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <section id="introducao" class="mb-12 p-6 bg-white rounded-lg shadow-lg">
+        <h2 class="text-2xl font-semibold text-amber-700 mb-4">Bem-vindo!</h2>
+        <p class="text-lg leading-relaxed">
+          Esta página oferece uma análise interativa do workflow `on IaC PR
+          against [dev]`. Ele é projetado para automatizar a validação e
+          aplicação de mudanças de Infraestrutura como Código (IaC) no ambiente
+          de Qualidade (QA), disparado por um Pull Request para a branch `dev`.
+          Compreenda como a segurança e a automação se unem para gerenciar sua
+          infraestrutura.
+        </p>
+      </section>
+
+      <section
+        id="o-que-sao-github-actions"
+        class="mb-12 p-6 bg-white rounded-lg shadow-lg"
+      >
+        <h2 class="text-2xl font-semibold text-amber-700 mb-4">
+          O que são GitHub Actions?
+        </h2>
+        <p class="text-lg leading-relaxed mb-2">
+          GitHub Actions é uma plataforma de CI/CD (Integração Contínua/Entrega
+          Contínua) que permite automatizar tarefas diretamente no seu
+          repositório GitHub. Você pode criar workflows personalizados para
+          construir, testar e implantar seu código. Esses workflows são
+          definidos em arquivos YAML e residem no diretório
+          <code>.github/workflows/</code> do seu repositório.
+        </p>
+        <p class="text-lg leading-relaxed">
+          Esta seção introdutória ajuda a contextualizar a ferramenta principal
+          utilizada para automatizar este pipeline de IaC.
+        </p>
+      </section>
+
+      <section id="analise-workflow" class="mb-12">
+        <h2 class="text-2xl font-semibold text-amber-700 mb-6 text-center">
+          Análise Interativa do Workflow
+        </h2>
+        <p class="text-lg leading-relaxed mb-6 text-center max-w-3xl mx-auto">
+          Clique nas seções destacadas do código YAML abaixo. A explicação
+          correspondente aparecerá ao lado. Esta abordagem permite que você
+          conecte diretamente cada parte da configuração com sua descrição
+          detalhada, facilitando o aprendizado.
+        </p>
+        <div class="lg:flex lg:space-x-6">
+          <div
+            class="lg:w-1/2 bg-slate-800 text-slate-100 p-6 rounded-lg shadow-xl yaml-code-block overflow-x-auto"
+          >
+            <pre>
+<span id="yaml-name" class="interactive-yaml-segment">name: on IaC PR against [dev]</span>
+
+<span id="yaml-on" class="interactive-yaml-segment">on:</span>
+  <span id="yaml-on-pull-request" class="interactive-yaml-segment ml-4">pull_request:</span>
+    <span id="yaml-on-pull-request-branches" class="interactive-yaml-segment ml-8">branches: [dev]</span>
+    <span id="yaml-on-pull-request-paths" class="interactive-yaml-segment ml-8">paths:</span>
+      <span class="interactive-yaml-segment ml-12">- ".github/workflows/on-iac-*.yaml"</span>
+      <span class="interactive-yaml-segment ml-12">- "infrastructure/**"</span>
+
+<span id="yaml-jobs" class="interactive-yaml-segment">jobs:</span>
+
+  <span id="yaml-job-def" class="interactive-yaml-segment ml-4">terraform-qa-infrastructure:</span>
+    <span id="yaml-job-env" class="interactive-yaml-segment ml-8">environment: quality-assurance</span>
+    <span id="yaml-job-runs-on" class="interactive-yaml-segment ml-8">runs-on: ubuntu-latest</span>
+    <span id="yaml-job-permissions" class="interactive-yaml-segment ml-8">permissions:</span>
+      <span class="interactive-yaml-segment ml-12">id-token: write # This is required for requesting the JWT</span>
+    <span id="yaml-job-steps" class="interactive-yaml-segment ml-8">steps:</span>
+      <span id="yaml-step-checkout" class="interactive-yaml-segment ml-10">- uses: actions/checkout@v3</span>
+      <span id="yaml-step-aws-creds" class="interactive-yaml-segment ml-10">- name: Configure AWS credentials</span>
+        <span class="interactive-yaml-segment ml-12">uses: aws-actions/configure-aws-credentials@v3</span>
+        <span class="interactive-yaml-segment ml-12">with:</span>
+          <span class="interactive-yaml-segment ml-16">role-to-assume: arn:aws:iam::${{ secrets.AWS_ACCOUNT_ID }}:role/GlueCICDGitHubActionsServiceRole</span>
+          <span class="interactive-yaml-segment ml-16">aws-region: ${{ vars.AWS_REGION }}</span>
+      <span id="yaml-step-setup-terraform" class="interactive-yaml-segment ml-10">- uses: hashicorp/setup-terraform@v2</span>
+      <span id="yaml-step-tf-fmt" class="interactive-yaml-segment ml-10">- name: Terraform style check</span>
+        <span class="interactive-yaml-segment ml-12">run: terraform fmt -check -recursive ./infrastructure</span>
+      <span id="yaml-step-tf-validate" class="interactive-yaml-segment ml-10">- name: Terraform validate</span>
+        <span class="interactive-yaml-segment ml-12">run: terraform -chdir=./infrastructure validate</span>
+      <span id="yaml-step-tf-init" class="interactive-yaml-segment ml-10">- name: Terraform init</span>
+        <span class="interactive-yaml-segment ml-12">run: terraform -chdir=./infrastructure/environments/qa init -input=false</span>
+      <span id="yaml-step-tf-plan" class="interactive-yaml-segment ml-10">- name: Terraform plan</span>
+        <span class="interactive-yaml-segment ml-12">run: terraform -chdir=./infrastructure/environments/qa plan -input=false</span>
+      <span id="yaml-step-tf-apply" class="interactive-yaml-segment ml-10">- name: Terraform apply</span>
+        <span class="interactive-yaml-segment ml-12">run: terraform -chdir=./infrastructure/environments/qa apply -input=false -auto-approve</span>
+</pre>
+          </div>
+          <div class="lg:w-1/2 mt-6 lg:mt-0 explanation-panel-container">
+            <div
+              id="explanation-panel"
+              class="p-6 bg-amber-100 rounded-lg shadow-lg min-h-[300px] border border-amber-300"
+            >
+              <p class="text-neutral-700 text-lg">
+                Clique em uma seção do código YAML à esquerda para ver a
+                explicação detalhada aqui.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section
+        id="resumo-fluxo"
+        class="mb-12 p-6 bg-white rounded-lg shadow-lg"
+      >
+        <h2 class="text-2xl font-semibold text-amber-700 mb-4">
+          Resumo do Fluxo do Workflow
+        </h2>
+        <p class="text-lg leading-relaxed mb-2">
+          Este workflow é disparado sempre que um Pull Request é aberto ou
+          atualizado contra a branch `dev`, e as mudanças afetam arquivos de
+          IaC. Ele então:
+        </p>
+        <ol class="list-decimal list-inside text-lg leading-relaxed space-y-1">
+          <li>Faz o checkout do código do Pull Request.</li>
+          <li>Configura as credenciais da AWS usando uma `role` IAM e OIDC.</li>
+          <li>Instala o Terraform no ambiente do runner.</li>
+          <li>
+            Verifica a formatação do código Terraform para garantir padrões.
+          </li>
+          <li>Valida a sintaxe e a lógica do código Terraform.</li>
+          <li>Inicializa o diretório Terraform para o ambiente de QA.</li>
+          <li>
+            Gera um plano das mudanças que seriam aplicadas na infraestrutura
+            AWS de QA.
+          </li>
+          <li>
+            Aplica automaticamente essas mudanças, provisionando ou atualizando
+            os recursos AWS necessários para o ambiente de QA.
+          </li>
+        </ol>
+        <p class="text-lg leading-relaxed mt-3">
+          Este pipeline garante que todas as propostas de mudança de
+          infraestrutura para o ambiente de QA sejam validadas e aplicadas
+          automaticamente, acelerando o ciclo de desenvolvimento e teste.
+        </p>
+      </section>
+
+      <section id="pontos-chave" class="p-6 bg-white rounded-lg shadow-lg">
+        <h2 class="text-2xl font-semibold text-amber-700 mb-4">
+          Pontos Chave e Destaques
+        </h2>
+        <p class="text-lg leading-relaxed mb-4">
+          Para reforçar o aprendizado, alguns conceitos e práticas são cruciais
+          neste workflow de IaC para QA:
+        </p>
+        <div class="space-y-4">
+          <div>
+            <h3 class="text-xl font-medium text-neutral-700">
+              Gatilho `pull_request` para `dev`:
+            </h3>
+            <p class="text-lg leading-relaxed">
+              Este workflow é acionado por Pull Requests direcionados à branch
+              `dev`. Isso é uma prática comum para ambientes de QA, onde as
+              mudanças são revisadas e testadas antes de serem mescladas para
+              ambientes mais críticos como produção.
+            </p>
+          </div>
+          <div>
+            <h3 class="text-xl font-medium text-neutral-700">
+              Restrição por `paths` (`infrastructure/**`):
+            </h3>
+            <p class="text-lg leading-relaxed">
+              O workflow só é disparado se as mudanças no Pull Request afetarem
+              arquivos dentro do diretório `infrastructure/`. Isso otimiza o uso
+              dos runners, evitando execuções desnecessárias para mudanças em
+              outras partes do código.
+            </p>
+          </div>
+          <div>
+            <h3 class="text-xl font-medium text-neutral-700">
+              Ambiente `quality-assurance`:
+            </h3>
+            <p class="text-lg leading-relaxed">
+              A associação do job a um ambiente `quality-assurance` no GitHub
+              Actions permite configurar regras de proteção específicas (como
+              aprovações manuais para o `apply`, embora aqui esteja
+              `auto-approve`) e segredos/variáveis exclusivos para o QA.
+            </p>
+          </div>
+          <div>
+            <h3 class="text-xl font-medium text-neutral-700">
+              `terraform apply -auto-approve` em PR:
+            </h3>
+            <p class="text-lg leading-relaxed">
+              A aplicação automática (`-auto-approve`) em um PR para QA pode ser
+              aceitável para acelerar testes de integração. No entanto, em
+              ambientes de produção, é **altamente recomendado** que o
+              `terraform apply` seja manual ou exija aprovação humana explícita.
+            </p>
+          </div>
+          <div>
+            <h3 class="text-xl font-medium text-neutral-700">
+              Autenticação Segura com OIDC (Repetição):
+            </h3>
+            <p class="text-lg leading-relaxed">
+              Assim como em outros workflows de IaC, o uso de
+              `aws-actions/configure-aws-credentials` com `id-token: write` e
+              `role-to-assume` é a forma mais segura de autenticar com a AWS,
+              evitando credenciais de longa duração.
+            </p>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="mt-12 py-8 bg-neutral-800 text-neutral-300 text-center">
+      <p>
+        &copy; <span id="currentYear"></span> Explorador Interativo. Criado para
+        facilitar o aprendizado de workflows.
+      </p>
+    </footer>
+
+    <script>
+      document.getElementById("currentYear").textContent =
+        new Date().getFullYear();
+
+      const explanations = {
+        "yaml-name": {
+          title: "<code>name: on IaC PR against [dev]</code>",
+          text: "Define o nome do workflow. Este nome indica claramente que o workflow é acionado por Pull Requests de Infraestrutura como Código (IaC) direcionados à branch `dev`.",
+        },
+        "yaml-on": {
+          title: "<code>on:</code>",
+          text: "Esta seção define os eventos que irão disparar este workflow. Neste caso, ele será acionado por eventos relacionados a Pull Requests.",
+        },
+        "yaml-on-pull-request": {
+          title: "<code>pull_request:</code>",
+          text: "O workflow será disparado sempre que houver um evento de `pull_request` (abertura, atualização, etc.). Isso é ideal para pipelines de validação e aplicação de IaC em ambientes de teste, onde as mudanças são revisadas antes de serem mescladas.",
+        },
+        "yaml-on-pull-request-branches": {
+          title: "<code>branches: [dev]</code>",
+          text: "Especifica que o `pull_request` deve ser direcionado apenas à branch `dev`. Isso garante que as validações e aplicações de IaC ocorram apenas para o ambiente de desenvolvimento/QA, mantendo outros ambientes protegidos.",
+        },
+        "yaml-on-pull-request-paths": {
+          title: "<code>paths:</code>",
+          text: "Restringe ainda mais o disparo do workflow. Ele só será executado se as alterações no Pull Request afetarem arquivos dentro dos caminhos especificados: `.github/workflows/on-iac-*.yaml` (o próprio workflow de IaC) ou `infrastructure/**` (qualquer arquivo dentro da pasta de infraestrutura).",
+        },
+        "yaml-jobs": {
+          title: "<code>jobs:</code>",
+          text: "Um workflow é composto por um ou mais 'jobs' (tarefas). Este workflow possui um único job responsável pela infraestrutura de QA.",
+        },
+        "yaml-job-def": {
+          title: "<code>terraform-qa-infrastructure:</code>",
+          text: "O nome do job. Este nome descritivo indica que o job é responsável por gerenciar a infraestrutura do ambiente de Qualidade (QA) usando Terraform.",
+        },
+        "yaml-job-env": {
+          title: "<code>environment: quality-assurance</code>",
+          text: "Associa este job a um ambiente de implantação chamado `quality-assurance`. Ambientes no GitHub Actions permitem configurar regras de proteção (como aprovações manuais) e segredos/variáveis específicos para aquele ambiente, aumentando a segurança e o controle.",
+        },
+        "yaml-job-runs-on": {
+          title: "<code>runs-on: ubuntu-latest</code>",
+          text: "Especifica o tipo de máquina virtual (runner) onde o job será executado. `ubuntu-latest` significa a versão mais recente do Ubuntu Linux fornecida pelo GitHub, um ambiente padrão para a execução de ferramentas como Terraform.",
+        },
+        "yaml-job-permissions": {
+          title: "<code>permissions: id-token: write</code>",
+          text: "Define as permissões que o token de acesso do GitHub Actions terá durante a execução do job. `id-token: write` é essencial para a autenticação com a AWS usando OIDC (OpenID Connect), permitindo que o runner solicite um JWT para assumir uma role IAM.",
+        },
+        "yaml-job-steps": {
+          title: "<code>steps:</code>",
+          text: "Uma sequência de tarefas individuais (passos) que serão executadas em ordem dentro do job `terraform-qa-infrastructure`. Estes passos configuram o ambiente, validam o código Terraform e aplicam as mudanças.",
+        },
+        "yaml-step-checkout": {
+          title: "<code>- uses: actions/checkout@v3</code>",
+          text: "Este passo usa a action oficial `actions/checkout@v3` para baixar o código do seu repositório (especificamente o do Pull Request) para o runner. Isso permite que os passos subsequentes acessem seus arquivos de IaC.",
+        },
+        "yaml-step-aws-creds": {
+          title:
+            "<code>- name: Configure AWS credentials<br>  uses: aws-actions/configure-aws-credentials@v3</code>",
+          text: "Este passo configura as credenciais da AWS no ambiente do runner usando a action `aws-actions/configure-aws-credentials@v3`. Ele utiliza OIDC para assumir uma role IAM específica (`GlueCICDGitHubActionsServiceRole`) na sua conta AWS, usando o `${{ secrets.AWS_ACCOUNT_ID }}` e definindo a região com `${{ vars.AWS_REGION }}`. Esta é uma forma segura de autenticação.",
+        },
+        "yaml-step-setup-terraform": {
+          title: "<code>- uses: hashicorp/setup-terraform@v2</code>",
+          text: "Este passo usa a action oficial da HashiCorp `setup-terraform@v2` para configurar o Terraform no runner. Ele garante que a versão correta do Terraform esteja instalada e disponível no PATH do sistema para os comandos subsequentes.",
+        },
+        "yaml-step-tf-fmt": {
+          title:
+            "<code>- name: Terraform style check<br>  run: terraform fmt -check -recursive ./infrastructure</code>",
+          text: "Executa `terraform fmt -check -recursive ./infrastructure` para verificar a formatação do código Terraform. O `-check` garante que o comando falhe se houver arquivos fora do padrão, sem modificá-los. É uma boa prática para manter a consistência do estilo do código.",
+        },
+        "yaml-step-tf-validate": {
+          title:
+            "<code>- name: Terraform validate<br>  run: terraform -chdir=./infrastructure validate</code>",
+          text: "Executa `terraform -chdir=./infrastructure validate` para verificar a sintaxe e a configuração dos arquivos Terraform. Ele valida se os arquivos de configuração são sintaticamente válidos e consistentes, sem interagir com a AWS.",
+        },
+        "yaml-step-tf-init": {
+          title:
+            "<code>- name: Terraform init<br>  run: terraform -chdir=./infrastructure/environments/qa init -input=false</code>",
+          text: "Inicializa um diretório de trabalho Terraform para o ambiente de QA. Este comando baixa os plugins dos provedores (AWS) e configura o backend para o estado (state). O `-input=false` impede a solicitação de entrada interativa, essencial em CI/CD.",
+        },
+        "yaml-step-tf-plan": {
+          title:
+            "<code>- name: Terraform plan<br>  run: terraform -chdir=./infrastructure/environments/qa plan -input=false</code>",
+          text: "Gera um plano de execução para o ambiente de QA. Este comando compara o estado atual da infraestrutura com a configuração desejada e gera um plano detalhado do que o Terraform fará (criar, modificar, destruir recursos). É crucial para revisão.",
+        },
+        "yaml-step-tf-apply": {
+          title:
+            "<code>- name: Terraform apply<br>  run: terraform -chdir=./infrastructure/environments/qa apply -input=false -auto-approve</code>",
+          text: "Aplica as alterações definidas no plano para o ambiente de QA. O `apply` executa as ações para provisionar ou atualizar os recursos AWS. O `-auto-approve` pula a confirmação manual, o que é comum em pipelines de QA para automação, mas requer cautela.",
+        },
+      };
+
+      const explanationPanel = document.getElementById("explanation-panel");
+      const yamlSegments = document.querySelectorAll(
+        ".interactive-yaml-segment"
+      );
+      let currentActiveSegment = null;
+
+      yamlSegments.forEach((segment) => {
+        segment.addEventListener("click", () => {
+          const explanationKey = segment.id;
+          if (explanations.hasOwnProperty(explanationKey)) {
+            const content = explanations[explanationKey];
+            if (content) {
+              explanationPanel.innerHTML = `
+                            <h3 class="text-xl font-semibold text-amber-800 mb-2">${content.title}</h3>
+                            <p class="text-neutral-700 text-lg leading-relaxed">${content.text}</p>
+                        `;
+              if (currentActiveSegment) {
+                currentActiveSegment.classList.remove("active");
+              }
+              segment.classList.add("active");
+              currentActiveSegment = segment;
+            }
+          }
+        });
+      });
+    </script>
+  </body>
+</html>
+```
