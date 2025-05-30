@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Explorador Interativo: Workflow Greetings</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+      body {
+        font-family: "Inter", sans-serif; /* Using Inter as a clean, modern font */
+      }
+      .yaml-code-block {
+        white-space: pre;
+        font-family: "Courier New", Courier, monospace;
+        line-height: 1.6;
+      }
+      .interactive-yaml-segment {
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+        border-radius: 4px;
+        padding: 2px 4px;
+        margin: 1px 0;
+        display: inline-block; /* Allows padding and border radius to apply correctly */
+      }
+      .interactive-yaml-segment:hover {
+        background-color: #fde68a; /* amber-200 */
+      }
+      .interactive-yaml-segment.active {
+        background-color: #fcd34d; /* amber-300 */
+        font-weight: bold;
+      }
+      .explanation-panel-container {
+        position: sticky;
+        top: 1rem; /* Adjust as needed for header height */
+        max-height: calc(
+          100vh - 2rem
+        ); /* Adjust based on top value and desired padding */
+        overflow-y: auto;
+      }
+      /* Custom scrollbar for explanation panel (optional, but enhances aesthetics) */
+      .explanation-panel-container::-webkit-scrollbar {
+        width: 8px;
+      }
+      .explanation-panel-container::-webkit-scrollbar-track {
+        background: #fef3c7; /* amber-100 */
+      }
+      .explanation-panel-container::-webkit-scrollbar-thumb {
+        background-color: #fbbf24; /* amber-400 */
+        border-radius: 10px;
+        border: 2px solid #fef3c7; /* amber-100 */
+      }
+    </style>
+  </head>
+  <body class="bg-amber-50 text-neutral-800 antialiased">
+    <header class="bg-amber-600 text-white py-6 shadow-md">
+      <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+        <h1 class="text-3xl font-bold text-center">
+          Explorador Interativo: Workflow Greetings
+        </h1>
+      </div>
+    </header>
+
+    <main class="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <section id="introducao" class="mb-12 p-6 bg-white rounded-lg shadow-lg">
+        <h2 class="text-2xl font-semibold text-amber-700 mb-4">Bem-vindo!</h2>
+        <p class="text-lg leading-relaxed">
+          Esta página oferece uma análise interativa do workflow `greetings` do
+          GitHub Actions. Ele é projetado para enviar mensagens de boas-vindas
+          automáticas para novos contribuidores ou para aqueles que abrem sua
+          primeira `issue` ou `pull request`, promovendo um ambiente
+          colaborativo e acolhedor.
+        </p>
+      </section>
+
+      <section
+        id="o-que-sao-github-actions"
+        class="mb-12 p-6 bg-white rounded-lg shadow-lg"
+      >
+        <h2 class="text-2xl font-semibold text-amber-700 mb-4">
+          O que são GitHub Actions?
+        </h2>
+        <p class="text-lg leading-relaxed mb-2">
+          GitHub Actions é uma plataforma de CI/CD (Integração Contínua/Entrega
+          Contínua) que permite automatizar tarefas diretamente no seu
+          repositório GitHub. Você pode criar workflows personalizados para
+          construir, testar e implantar seu código. Esses workflows são
+          definidos em arquivos YAML e residem no diretório
+          <code>.github/workflows/</code> do seu repositório.
+        </p>
+        <p class="text-lg leading-relaxed">
+          Esta seção introdutória ajuda a contextualizar a ferramenta principal
+          utilizada para automatizar este processo de saudação.
+        </p>
+      </section>
+
+      <section id="analise-workflow" class="mb-12">
+        <h2 class="text-2xl font-semibold text-amber-700 mb-6 text-center">
+          Análise Interativa do Workflow
+        </h2>
+        <p class="text-lg leading-relaxed mb-6 text-center max-w-3xl mx-auto">
+          Clique nas seções destacadas do código YAML abaixo. A explicação
+          correspondente aparecerá ao lado. Esta abordagem permite que você
+          conecte diretamente cada parte da configuração com sua descrição
+          detalhada, facilitando o aprendizado.
+        </p>
+        <div class="lg:flex lg:space-x-6">
+          <div
+            class="lg:w-1/2 bg-slate-800 text-slate-100 p-6 rounded-lg shadow-xl yaml-code-block overflow-x-auto"
+          >
+            <pre>
+<span id="yaml-name" class="interactive-yaml-segment">name: greetings</span>
+
+<span id="yaml-on" class="interactive-yaml-segment">on: [pull_request, issues]</span>
+
+<span id="yaml-jobs" class="interactive-yaml-segment">jobs:</span>
+  <span id="yaml-job-greeting" class="interactive-yaml-segment ml-4">greeting:</span>
+    <span id="yaml-runs-on" class="interactive-yaml-segment ml-8">runs-on: ubuntu-latest</span>
+    <span id="yaml-steps" class="interactive-yaml-segment ml-8">steps:</span>
+      <span id="yaml-step-first-interaction" class="interactive-yaml-segment ml-10">- uses: actions/first-interaction@v1</span>
+        <span id="yaml-step-first-interaction-with" class="interactive-yaml-segment ml-12">with:</span>
+          <span id="yaml-step-repo-token" class="interactive-yaml-segment ml-16">repo-token: ${{ secrets.GITHUB_TOKEN }}</span>
+          <span id="yaml-step-issue-message" class="interactive-yaml-segment ml-16">issue-message: ></span>
+            <span class="interactive-yaml-segment ml-18">Thanks for taking the time to open an issue.</span>
+            <span class="interactive-yaml-segment ml-18">We will have a look and answer as soon as we can.</span>
+          <span id="yaml-step-pr-message" class="interactive-yaml-segment ml-16">pr-message: ></span>
+            <span class="interactive-yaml-segment ml-18">Thank you for opening a PR.</span>
+            <span class="interactive-yaml-segment ml-18">We will review the PR and provide feedback as soon as we can.</span>
+</pre>
+          </div>
+          <div class="lg:w-1/2 mt-6 lg:mt-0 explanation-panel-container">
+            <div
+              id="explanation-panel"
+              class="p-6 bg-amber-100 rounded-lg shadow-lg min-h-[300px] border border-amber-300"
+            >
+              <p class="text-neutral-700 text-lg">
+                Clique em uma seção do código YAML à esquerda para ver a
+                explicação detalhada aqui.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section
+        id="resumo-fluxo"
+        class="mb-12 p-6 bg-white rounded-lg shadow-lg"
+      >
+        <h2 class="text-2xl font-semibold text-amber-700 mb-4">
+          Resumo do Fluxo do Workflow
+        </h2>
+        <p class="text-lg leading-relaxed mb-2">
+          Este workflow `greetings` é um exemplo de automação simples para
+          interação com a comunidade. Ele é disparado quando:
+        </p>
+        <ol class="list-decimal list-inside text-lg leading-relaxed space-y-1">
+          <li>Um novo `pull request` é aberto.</li>
+          <li>Uma nova `issue` é aberta.</li>
+        </ol>
+        <p class="text-lg leading-relaxed mt-3">
+          Sua principal função é enviar uma mensagem de boas-vindas automática,
+          personalizada para cada tipo de evento (PR ou issue), para os novos
+          contribuidores. Isso ajuda a criar um ambiente acolhedor e a reduzir o
+          tempo de resposta inicial.
+        </p>
+      </section>
+
+      <section id="pontos-chave" class="p-6 bg-white rounded-lg shadow-lg">
+        <h2 class="text-2xl font-semibold text-amber-700 mb-4">
+          Pontos Chave e Destaques
+        </h2>
+        <p class="text-lg leading-relaxed mb-4">
+          Para reforçar o aprendizado, alguns conceitos e práticas são cruciais
+          neste workflow `greetings`:
+        </p>
+        <div class="space-y-4">
+          <div>
+            <h3 class="text-xl font-medium text-neutral-700">
+              Gatilhos Múltiplos (`on: [pull_request, issues]`):
+            </h3>
+            <p class="text-lg leading-relaxed">
+              Este workflow é acionado por mais de um tipo de evento do GitHub
+              (abertura de Pull Request e abertura de Issue). Isso demonstra a
+              flexibilidade dos gatilhos do GitHub Actions para automatizar
+              diferentes interações no repositório.
+            </p>
+          </div>
+          <div>
+            <h3 class="text-xl font-medium text-neutral-700">
+              Ação de Boas-Vindas (`actions/first-interaction@v1`):
+            </h3>
+            <p class="text-lg leading-relaxed">
+              A action `actions/first-interaction` é projetada especificamente
+              para saudar a primeira contribuição de um usuário (seja um PR ou
+              uma issue). É uma forma de automatizar a comunicação inicial e
+              tornar o processo mais acolhedor para novos membros da comunidade.
+            </p>
+          </div>
+          <div>
+            <h3 class="text-xl font-medium text-neutral-700">
+              Uso de `secrets.GITHUB_TOKEN`:
+            </h3>
+            <p class="text-lg leading-relaxed">
+              O workflow utiliza `secrets.GITHUB_TOKEN`, um token de acesso de
+              curto prazo que o GitHub fornece automaticamente para cada
+              execução de workflow. Ele tem permissões limitadas (baseadas nas
+              permissões do repositório) para realizar ações como postar
+              comentários, o que é ideal para este workflow de saudação.
+            </p>
+          </div>
+          <div>
+            <h3 class="text-xl font-medium text-neutral-700">
+              Mensagens Multilinhas (`>`):
+            </h3>
+            <p class="text-lg leading-relaxed">
+              A sintaxe `>` (sinal de maior) após `issue-message:` e
+              `pr-message:` permite que você defina mensagens de texto que
+              abrangem várias linhas no YAML. Isso é útil para criar mensagens
+              mais longas e formatadas, mantendo a legibilidade do arquivo de
+              workflow.
+            </p>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="mt-12 py-8 bg-neutral-800 text-neutral-300 text-center">
+      <p>
+        &copy; <span id="currentYear"></span> Explorador Interativo. Criado para
+        facilitar o aprendizado de workflows.
+      </p>
+    </footer>
+
+    <script>
+      document.getElementById("currentYear").textContent =
+        new Date().getFullYear();
+
+      const explanations = {
+        "yaml-name": {
+          title: "<code>name: greetings</code>",
+          text: "Define o nome do workflow. Este nome (`greetings`) é descritivo e indica que o workflow tem como objetivo saudar ou cumprimentar os usuários.",
+        },
+        "yaml-on": {
+          title: "<code>on: [pull_request, issues]</code>",
+          text: "Esta seção define os eventos que irão disparar o workflow. Ele será acionado quando um `pull_request` (requisição de pull) é aberto ou atualizado, e quando uma `issue` (problema/tarefa) é aberta ou atualizada. Isso permite que o workflow reaja a diferentes tipos de interações no repositório.",
+        },
+        "yaml-jobs": {
+          title: "<code>jobs:</code>",
+          text: "Um workflow é composto por um ou mais 'jobs' (tarefas). Cada job é executado em um runner e consiste em uma série de passos. Este workflow possui um único job chamado `greeting`.",
+        },
+        "yaml-job-greeting": {
+          title: "<code>greeting:</code>",
+          text: "Este é o nome do job principal neste workflow. O job `greeting` é responsável por enviar as mensagens de boas-vindas automáticas aos usuários.",
+        },
+        "yaml-runs-on": {
+          title: "<code>runs-on: ubuntu-latest</code>",
+          text: "Especifica o tipo de máquina virtual (runner) onde o job `greeting` será executado. `ubuntu-latest` significa a versão mais recente do Ubuntu Linux fornecida pelo GitHub. É um ambiente padrão para a execução da action.",
+        },
+        "yaml-steps": {
+          title: "<code>steps:</code>",
+          text: "Uma sequência de tarefas individuais (passos) que serão executadas em ordem dentro do job `greeting`. Neste workflow, há apenas um passo que utiliza uma action específica para enviar saudações.",
+        },
+        "yaml-step-first-interaction": {
+          title: "<code>- uses: actions/first-interaction@v1</code>",
+          text: "Este passo utiliza a action oficial `actions/first-interaction@v1`. Esta action é projetada para identificar se um usuário está realizando sua primeira interação (abertura de PR ou issue) em um repositório e, se for o caso, postar uma mensagem de boas-vindas definida.",
+        },
+        "yaml-step-first-interaction-with": {
+          title: "<code>with:</code>",
+          text: "A seção `with:` é usada para passar parâmetros (entradas) para a action `actions/first-interaction@v1`. É aqui que você configura o comportamento específico da action, como o token de acesso e as mensagens a serem postadas.",
+        },
+        "yaml-step-repo-token": {
+          title: "<code>repo-token: ${{ secrets.GITHUB_TOKEN }}</code>",
+          text: "Este parâmetro fornece à action o token de autenticação necessário para interagir com a API do GitHub (por exemplo, para postar comentários). `secrets.GITHUB_TOKEN` é um token de acesso que o GitHub gera automaticamente para cada execução de workflow, com permissões limitadas ao repositório, garantindo segurança.",
+        },
+        "yaml-step-issue-message": {
+          title: "<code>issue-message: > ...</code>",
+          text: "Este parâmetro define a mensagem de boas-vindas que será postada como um comentário quando um usuário abrir sua primeira `issue` (problema/tarefa). O símbolo `>` permite que a mensagem seja escrita em múltiplas linhas no YAML, mas será interpretada como uma única linha no comentário final.",
+        },
+        "yaml-step-pr-message": {
+          title: "<code>pr-message: > ...</code>",
+          text: "Este parâmetro define a mensagem de boas-vindas que será postada como um comentário quando um usuário abrir seu primeiro `pull request` (requisição de pull). Assim como `issue-message`, o `>` permite que a mensagem seja escrita em várias linhas no YAML para melhor legibilidade.",
+        },
+      };
+
+      const explanationPanel = document.getElementById("explanation-panel");
+      const yamlSegments = document.querySelectorAll(
+        ".interactive-yaml-segment"
+      );
+      let currentActiveSegment = null;
+
+      yamlSegments.forEach((segment) => {
+        segment.addEventListener("click", () => {
+          const explanationKey = segment.id;
+          if (explanations.hasOwnProperty(explanationKey)) {
+            const content = explanations[explanationKey];
+            if (content) {
+              explanationPanel.innerHTML = `
+                            <h3 class="text-xl font-semibold text-amber-800 mb-2">${content.title}</h3>
+                            <p class="text-neutral-700 text-lg leading-relaxed">${content.text}</p>
+                        `;
+              if (currentActiveSegment) {
+                currentActiveSegment.classList.remove("active");
+              }
+              segment.classList.add("active");
+              currentActiveSegment = segment;
+            }
+          }
+        });
+      });
+    </script>
+  </body>
+</html>
